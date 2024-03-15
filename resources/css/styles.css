@@ -1,0 +1,36 @@
+main{
+    background-image: url(/img/background.jpg);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 100% 120%, auto;
+}
+
+body{
+    background-image: url(/img/contenido.jpg);
+    background-repeat: repeat-y;
+    background-position: center;
+    background-size: 100% 100%, auto;
+}
+
+#banner{
+    width: 50%;
+}
+
+#navbar{
+    background-color: #A6174B;
+}
+
+.me-10{
+    margin-right: 150px;
+}
+
+.boton{
+    background: #A6174B;
+    width: 100%;
+    cursor: pointer;
+}
+
+.contenido{
+    height: 1000px;
+    
+}
