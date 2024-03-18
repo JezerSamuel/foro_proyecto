@@ -16,5 +16,6 @@ class Badge extends Model
         'valid_until',
         'imagen',
         'folio',
+        'topic',
     ];
 }

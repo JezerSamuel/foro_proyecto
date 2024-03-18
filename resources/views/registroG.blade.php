@@ -10,7 +10,7 @@
     <style>
         /* Estilos para main */
         main{
-            background-image: url(/img/background.jpg);
+            background-image: url('{{ asset("storage/assets/imgForm/background.jpg") }}');
             background-repeat: no-repeat;
             background-position: center;
             background-size: 100% 120%, auto;
@@ -18,7 +18,7 @@
 
         /* Estilos para body */
         body{
-            background-image: url(/img/contenido.jpg);
+            background-image: url('{{ asset("storage/assets/imgForm/contenido.jpg") }}');
             background-repeat: repeat-y;
             background-position: center;
             background-size: 100% 100%, auto;
@@ -55,7 +55,7 @@
 <body>
     <main class="text-center">
         <div id="navbar-r">
-            <img src="{{ asset('storage/assets/img/banner_corregido.jpg') }}" alt="banner" id="banner">
+            <img src="{{ asset('storage/assets/imgForm/banner_corregido.jpg') }}" alt="banner" id="banner">
         </div>
         <div class="info bg-light mt-5 rounded border border-1 border-black float-sm-end me-5" style="width: 15%;">
             Informacion
@@ -102,6 +102,12 @@
                         </label>
                     </div>
                 @endforeach
+
+                <!-- Seccion para el topic, este campo solo es visible si el usuario selecciona el campo conferencista en el formulario-->
+                <div class="mb-3" id="topicField" style="display: none;">
+                    <label for="topic" class="form-label fw-bold">Topic:</label>
+                    <input type="text" class="form-control" id="topic" name="topic">
+                </div>
                   
                 <!-- Seccion para la foto del participante -->
                 <div class="mb-3">
@@ -119,6 +125,26 @@
             </form>
         </div>
     </main>
+
+    <script>
+        // Obtener los radio buttons
+        const radioButtons = document.querySelectorAll('input[name="flexRadioRole"]');
+
+        // Obtener el campo topic
+        const topicField = document.getElementById('topicField');
+
+        // Agregar event listener a cada radio button
+        radioButtons.forEach(function(radioButton) {
+            radioButton.addEventListener('change', function() {
+                // Si el radio button de conferencista está seleccionado, mostrar el campo topic, de lo contrario ocultarlo
+                if (radioButton.value == "3" && radioButton.checked) {
+                    topicField.style.display = 'block';
+                } else {
+                    topicField.style.display = 'none';
+                }
+            });
+        });
+    </script>
     
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>

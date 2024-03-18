@@ -21,8 +21,6 @@ class RegistroController extends Controller
     public function registrarUsuario(Request $request)
     {
         
-        
-
         // Crear usuario
         $usuario = User::create([
             'name' => $request->nombre,
@@ -55,10 +53,17 @@ class RegistroController extends Controller
             'valid_until' => now()->addYear(), // Fecha de expiración (1 año después)
             'imagen' => $imagenUrl, // URL de la imagen
             'folio' => $folio, // Folio
+            'topic' => $request->topic, // Tema de la conferencia
         ]);
 
-        // Redirigir a una página de confirmación o a donde desees
-        return redirect()->route('dashboard')->with('success', '¡El registro se ha completado correctamente!');
+        $idRole = $request->flexRadioRole; // Obtener el ID del rol de ususario
+        $eventRole = EventRole::find($idRole); // Busca el registro de EventRole con el ID especificado
+
+        $idUniversity = $request->universidad; // Obtener el ID de la universidaad
+        $university = University::find($idUniversity); // Busca el registro de University con el ID especificado
+
+        // Redirigir a la vista del gafete
+        return view('gafete.diseñoG',compact('request','university','eventRole','imagenUrl','folio'));
     }
 
     public function registrarUniversidad(Request $request)
