@@ -17,5 +17,6 @@ class Badge extends Model
         'imagen',
         'folio',
         'topic',
+        'qrUrl',
     ];
 }

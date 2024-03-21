@@ -60,10 +60,9 @@
             </div>
 
             <div class="text-center" style="margin-bottom: 46px;">
-                <div style="width: 200px;" class="mx-auto d-block mt-3 mb-2">
-                    <div id="qr-code"></div>
-                    <!-- En esta seccion va el qr del usuario-->
-                </div>
+            <div style="width: 200px;" class="mx-auto d-block mt-3 mb-2">
+                <img src="{{ asset('storage/qr-codes/'.$qrUrl) }}" alt="Código QR" id="qr-code" style="height:195px;">
+            </div>
                 <p>{{ $folio }}</p>
             </div>
             <footer class="text-center text-white py-2">
@@ -76,22 +75,11 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Obtener el valor de $folio
-            const folio = "{{ $folio }}";
-
-            // Generar la URL del código QR
-            const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?data=${encodeURIComponent(folio)}&size=200x200`;
-
-            // Mostrar el código QR
-            const qrCodeContainer = document.getElementById('qr-code');
-            const qrImage = new Image();
-            qrImage.src = qrCodeUrl;
-            qrCodeContainer.appendChild(qrImage);
 
             // Esperar un breve período de tiempo antes de generar el PDF
             setTimeout(function() {
                 downloadPDF();
-            }, 7000); // Esperar 1 segundo (1000 milisegundos)
+            }, 2000); // Esperar 1 segundo (1000 milisegundos)
 
             // Función para descargar automáticamente el contenido en formato PDF
             const downloadPDF = () => {

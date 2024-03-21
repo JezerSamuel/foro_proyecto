@@ -4,10 +4,15 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use Illuminate\Http\File;
 use App\Models\Badge;
 use App\Models\University;
 use App\Models\EventRole;
 use Illuminate\Support\Facades\Storage;
+use Endroid\QrCode\QrCode;
+use Endroid\QrCode\Writer\PngWriter;
+use Endroid\QrCode\ErrorCorrectionLevel;
+use Endroid\QrCode\Writer\Result\ResultInterface;
 
 class RegistroController extends Controller
 {
@@ -44,6 +49,41 @@ class RegistroController extends Controller
         // Crear folio
         $folio = '24-' . str_pad($request->universidad, 3, '0', STR_PAD_LEFT) . '-' . str_pad($usuario->id, 3, '0', STR_PAD_LEFT);
 
+
+        $writer = new PngWriter();
+
+        // Inicializar la variable $qrUrl
+
+        try {
+            // Crear código QR con el valor del folio
+            $qrCode = QrCode::create($folio)
+                ->setSize(300) // Tamaño del código QR
+                ->setMargin(10); // Margen
+
+            // Guardar el código QR como una imagen
+            $qrPath = 'app/public/qr-codes/' . $usuario->id . '_qr.png';
+
+            // Crear el directorio de destino si no existe
+            $qrDirectory = dirname(storage_path($qrPath));
+            if (!file_exists($qrDirectory)) {
+                mkdir($qrDirectory, 0777, true);
+            }
+
+            // Generar el código QR como una imagen PNG
+            $result = $writer->write($qrCode);
+
+            // Guardar el código QR como una imagen
+            file_put_contents(storage_path($qrPath), $result->getString());
+
+            // Obtener la URL del código QR
+            $qrUrl = $usuario->id . '_qr.png';
+
+        } catch (\Throwable $e) {
+            // Manejar excepciones
+            echo 'Error: ' . $e->getMessage();
+        }
+
+
         // Crear gafete
         $gafete = Badge::create([
             'user_id' => $usuario->id,
@@ -54,6 +94,7 @@ class RegistroController extends Controller
             'imagen' => $imagenUrl, // URL de la imagen
             'folio' => $folio, // Folio
             'topic' => $request->topic, // Tema de la conferencia
+            'qrUrl' => $qrUrl, // URL del código QR
         ]);
 
         $idRole = $request->flexRadioRole; // Obtener el ID del rol de ususario
@@ -63,7 +104,7 @@ class RegistroController extends Controller
         $university = University::find($idUniversity); // Busca el registro de University con el ID especificado
 
         // Redirigir a la vista del gafete
-        return view('gafete.diseñoG',compact('request','university','eventRole','imagenUrl','folio'));
+        return view('gafete.diseñoG',compact('request','qrUrl','university','eventRole','imagenUrl','folio'));
     }
 
     public function registrarUniversidad(Request $request)
