@@ -35,7 +35,7 @@ class RegistroController extends Controller
             'email' => $request->correo,
             'role' => $request->flexRadioRole,
             'password' => bcrypt('12345678'), // Contraseña predeterminada
-            
+            'telefono' => $request->numero,
         ]);
 
         $imagenUrl = null;
