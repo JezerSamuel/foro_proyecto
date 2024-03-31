@@ -83,6 +83,15 @@ class RegistroController extends Controller
             echo 'Error: ' . $e->getMessage();
         }
 
+        //Proceso en el cual se verifica el rol de usuario y se asigna el topic en caso de ser ususario especial
+        $topic = null;
+        $mesa = null;
+        if ($request->flexRadioRole == 2) {
+            $topic = $request->topic;
+        }
+        if ($request->flexRadioRole == 3) {
+            $mesa = $request->mesa;
+        }
 
         // Crear gafete
         $gafete = Badge::create([
@@ -93,7 +102,8 @@ class RegistroController extends Controller
             'valid_until' => now()->addYear(), // Fecha de expiración (1 año después)
             'imagen' => $imagenUrl, // URL de la imagen
             'folio' => $folio, // Folio
-            'topic' => $request->topic, // Tema de la conferencia
+            'topic' => $topic, // Tema de la conferencia
+            'mesa' => $mesa, // Número de mesa
             'qrUrl' => $qrUrl, // URL del código QR
         ]);
 

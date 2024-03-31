@@ -2,15 +2,16 @@ main {
     margin-top: -50px;
     padding-top: 50px;
     padding-bottom: 50px;
-    background-image: url(/img/FONDO1.png);
+    background-image: url('{{assets("storage/assets/imgForm/FONDO1.png")}}');
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
     height: fit-content;
+    font-family:'Roboto', sans-serif;
   }
   
   .inside {
-    background-image: url(/img/background.jpg);
+    background-image: url(/imgForm/FONDO1.png);
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;

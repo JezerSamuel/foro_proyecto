@@ -10,6 +10,7 @@ body{
     background-repeat: repeat-y;
     background-position: center;
     background-size: 100% 100%, auto;
+    font-family:cursive
 }
 
 #banner{

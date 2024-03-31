@@ -22,7 +22,7 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
     />
   </head>
-  <body style="font-family: Poppins">
+  <body>
     <div id="navbar">
         <img src="{{ asset('storage/assets/imgForm/banner_corregido.jpg') }}" alt="banner" id="banner">
     </div>
@@ -141,6 +141,7 @@
                   class="form-control"
                   id="nombre-ponencia"
                   placeholder="Ponencia"
+                  name="topic"
                 />
               </div>
 
@@ -151,6 +152,7 @@
                 <select
                   class="form-select mb-3"
                   aria-label="Default select example"
+                  name="mesa"
                 >
                   <option selected>--selecione una mesa--</option>
                   <!-- los siguientes son ejemplos, reemplazalos con datos reales y borra este comentario-->
