@@ -18,5 +18,6 @@ class Badge extends Model
         'folio',
         'topic',
         'qrUrl',
+        'mesa',
     ];
 }

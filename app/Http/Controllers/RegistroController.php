@@ -8,6 +8,7 @@ use Illuminate\Http\File;
 use App\Models\Badge;
 use App\Models\University;
 use App\Models\EventRole;
+use App\Models\Taller;
 use Illuminate\Support\Facades\Storage;
 use Endroid\QrCode\QrCode;
 use Endroid\QrCode\Writer\PngWriter;
@@ -123,12 +124,23 @@ class RegistroController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'domain' => 'required|string|max:255',
+
         ]);
+
+        $imagenUrl = null;
+
+        // Guardar imagen en la carpeta storage/assets/imgUniversity
+        if ($request->hasFile('logo')) {
+            $imagenPath = $request->file('logo')->store('public/assets/imgUniversity');
+            $imagenUrl = Storage::url($imagenPath);
+        }
+        
 
         // Crea una nueva universidad
         $universidad = new University();
         $universidad->name = $request->name;
         $universidad->domain = $request->domain;
+        $universidad->img = $imagenUrl;
 
         $universidad->save();
 
@@ -149,5 +161,71 @@ class RegistroController extends Controller
         $eventRole->save();
 
         return redirect()->route('registroER');
+    }
+
+    public function registrarTaller(Request $request)
+    {
+        $imagenUrl = null;
+
+        // Guardar imagen en la carpeta storage/assets/imgUniversity
+        if ($request->hasFile('logo')) {
+            $imagenPath = $request->file('logo')->store('public/assets/imgTaller');
+            $imagenUrl = Storage::url($imagenPath);
+        }
+
+        // Crea un nuevo taller
+        $taller = new Taller();
+        $taller->name = $request->name;
+        $taller->description = $request->description;
+        $taller->capacidad = $request->capacity;
+        $taller->img = $imagenUrl;
+
+        $taller->save();
+        return redirect()->route('registroT');
+    }
+
+    public function showRegistrationForm()
+    {
+        // Obtener la lista de talleres disponibles
+        $talleres = Taller::all();
+
+        // Retornar la vista con el formulario de registro y la lista de talleres
+        return view('registrar_usuario_taller',compact('talleres'));
+    }
+
+    public function register(Request $request)
+    {
+        // Validar los datos del formulario
+        $request->validate([
+            'folio' => 'required|string|max:255',
+            'taller' => 'required|exists:tallers,id',
+        ]);
+
+        // Buscar el badge asociado al folio ingresado
+        $badge = Badge::where('folio', $request->input('folio'))->first();
+
+        // Verificar si se encontró el badge
+        if (!$badge) {
+            return back()->with('error', 'No se encontró ningún usuario con el folio ingresado.');
+        }
+
+        // Obtener el usuario asociado al badge
+        $user_id = $badge->user_id;
+
+        $user = User::find($user_id);
+
+        // Obtener el taller seleccionado por el usuario
+        $taller = Taller::findOrFail($request->input('taller'));
+
+        // Verificar si el usuario ya está registrado en el taller
+        if ($user->talleres()->where('taller_id', $taller->id)->exists()) {
+            return back()->with('error', 'El usuario ya está registrado en este taller.');
+        }
+
+        // Registrar al usuario en el taller
+        $user->talleres()->attach($taller);
+
+        // Redireccionar con un mensaje de éxito
+        return redirect()->route('registro.usuario.evento')->with('success', 'Usuario registrado en el taller exitosamente.');
     }
 }

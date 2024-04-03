@@ -1,29 +1,34 @@
-<x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Registro de Universidad') }}
-        </h2>
-    </x-slot>
+@extends('adminlte::page')
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900 dark:text-gray-100">
-                    <form action="{{ route('registro.universidad') }}" method="POST">
-                        @csrf
-                        <div class="mb-3">
-                            <label for="name" class="form-label">Nombre</label>
-                            <input type="text" class="form-control" id="name" name="name" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="domain" class="form-label">Dominio</label>
-                            <input type="text" class="form-control" id="domain" name="domain" required>
-                        </div>
-                        
-                        <button type="submit" class="btn btn-primary">Añadir universidad</button>
-                    </form>
-                </div>
-            </div>
+@section('content_header')
+    <h1>Universidades registradas</h1>
+@stop
+
+@section('content')
+    <form action="{{ url('/registroU') }}" method="post" enctype="multipart/form-data">
+        @csrf
+        <div class="mb-3">
+            <label for="name" class="form-label">Nombre</label>
+            <input type="text" class="form-control" id="name" name="name" required>
         </div>
-    </div>
-</x-app-layout>
+        <div class="mb-3">
+            <label for="domain" class="form-label">Dominio</label>
+            <input type="text" class="form-control" id="domain" name="domain" required>
+        </div>
+        <div class="mb-3">
+            <label for="logo" class="form-label">Logo</label>
+            <input type="file" class="form-control" id="logo" name="logo" required>
+        </div>
+        
+        <button type="submit" class="btn btn-primary">Añadir universidad</button>
+    </form>
+@stop
+
+@section('css')
+    {{-- Add here extra stylesheets --}}
+    {{-- <link rel="stylesheet" href="/css/admin_custom.css"> --}}
+@stop
+
+@section('js')
+    <script> console.log("Hi, I'm using the Laravel-AdminLTE package!"); </script>
+@stop 
