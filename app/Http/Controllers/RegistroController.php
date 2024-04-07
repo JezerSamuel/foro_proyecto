@@ -198,7 +198,8 @@ class RegistroController extends Controller
         // Validar los datos del formulario
         $request->validate([
             'folio' => 'required|string|max:255',
-            'taller' => 'required|exists:tallers,id',
+            'talleres' => 'required|array',
+            'talleres.*' => 'exists:tallers,id',
         ]);
 
         // Buscar el badge asociado al folio ingresado
@@ -211,21 +212,33 @@ class RegistroController extends Controller
 
         // Obtener el usuario asociado al badge
         $user_id = $badge->user_id;
-
         $user = User::find($user_id);
 
-        // Obtener el taller seleccionado por el usuario
-        $taller = Taller::findOrFail($request->input('taller'));
+        // Obtener los talleres seleccionados por el usuario
+        $talleresIds = $request->input('talleres');
 
-        // Verificar si el usuario ya está registrado en el taller
-        if ($user->talleres()->where('taller_id', $taller->id)->exists()) {
-            return back()->with('error', 'El usuario ya está registrado en este taller.');
+        // Registrar al usuario en los talleres seleccionados y actualizar los espacios disponibles
+        foreach ($talleresIds as $tallerId) {
+            $taller = Taller::find($tallerId);
+
+            // Verificar si el usuario ya está registrado en el taller
+            if ($user->talleres()->where('taller_id', $taller->id)->exists()) {
+                continue; // Saltar el registro si el usuario ya está registrado en el taller
+            }
+
+            // Verificar si hay suficientes espacios disponibles en el taller
+            if ($taller->capacidad <= 0) {
+                return back()->with('error', 'No hay espacios disponibles en el taller ' . $taller->nombre);
+            }
+
+            // Registrar al usuario en el taller
+            $user->talleres()->attach($taller);
+
+            // Actualizar los espacios disponibles
+            $taller->decrement('capacidad');
         }
 
-        // Registrar al usuario en el taller
-        $user->talleres()->attach($taller);
-
         // Redireccionar con un mensaje de éxito
-        return redirect()->route('registro.usuario.evento')->with('success', 'Usuario registrado en el taller exitosamente.');
+        return redirect()->route('registro.usuario.evento')->with('success', 'Usuario registrado en los talleres exitosamente.');
     }
 }

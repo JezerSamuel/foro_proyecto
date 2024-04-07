@@ -26,13 +26,11 @@
         <label for="folio">Folio:</label>
         <input type="text" id="folio" name="folio" required>
 
-        <label for="taller">Selecciona el taller:</label>
-        <select id="taller" name="taller" required>
-            <option value="">Selecciona un taller</option>
-            @foreach ($talleres as $taller)
-                <option value="{{ $taller->id }}">{{ $taller->name }}</option>
-            @endforeach
-        </select>
+        <label>Selecciona los talleres:</label><br>
+        @foreach ($talleres as $taller)
+            <input type="checkbox" id="taller_{{ $taller->id }}" name="talleres[]" value="{{ $taller->id }}">
+            <label for="taller_{{ $taller->id }}">{{ $taller->name }}</label><br>
+        @endforeach
 
         <button type="submit">Registrar</button>
     </form>
