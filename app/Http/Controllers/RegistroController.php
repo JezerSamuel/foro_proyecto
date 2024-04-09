@@ -9,6 +9,7 @@ use App\Models\Badge;
 use App\Models\University;
 use App\Models\EventRole;
 use App\Models\Taller;
+use App\Models\Mesa;
 use Illuminate\Support\Facades\Storage;
 use Endroid\QrCode\QrCode;
 use Endroid\QrCode\Writer\PngWriter;
@@ -21,7 +22,8 @@ class RegistroController extends Controller
     {
         $eventRoles = EventRole::all();
         $universidades = University::all();
-        return view('registroG',compact('universidades','eventRoles'));
+        $mesas = Mesa::all();
+        return view('registroG',compact('universidades','eventRoles','mesas'));
     }
 
     public function registrarUsuario(Request $request)

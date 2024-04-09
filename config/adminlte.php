@@ -324,7 +324,7 @@ return [
         ],
         ['header' => 'Elementos de la Página'],
         [
-            'text' => 'Roles',
+            'text' => 'Mesas',
             'icon' => 'fas fa-fw fa-dice',
             'submenu' => [
                 [

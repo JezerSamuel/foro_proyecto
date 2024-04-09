@@ -155,23 +155,10 @@
                   name="mesa"
                 >
                   <option selected>--selecione una mesa--</option>
-                  <!-- los siguientes son ejemplos, reemplazalos con datos reales y borra este comentario-->
-                  <option value="1">
-                    Turismo de bienestar, salud e inclusivo
-                  </option>
-                  <option value="2">Turismo, gastronomía y enología</option>
-                  <option value="3">
-                    Turismo rural, ecoturismo y turismo comunitario
-                  </option>
-                  <option value="4">
-                    Gentrificación, población flotante y turístificación
-                  </option>
-                  <option value="5">
-                    Experiencias turísticas y pueblos mágicos
-                  </option>
-                  <option value="6">
-                    Gestión, competitividad y mercadotécnia turística
-                  </option>
+                  <!-- listado de las mesas-->
+                  @foreach ($mesas as $mesa)
+                    <option value="{{ $mesa->id }}">{{ $mesa->nombre}}</option>
+                  @endforeach 
                 </select>
               </div>
 
@@ -220,7 +207,7 @@
               </div>
               <div>
                 <label for="numero" class="form-label fw-bold"
-                  >Numero-telefonica</label
+                  >Numero-telefonico</label
                 >
                 <input
                   type="text"
