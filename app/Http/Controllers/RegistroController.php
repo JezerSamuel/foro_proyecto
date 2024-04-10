@@ -117,7 +117,7 @@ class RegistroController extends Controller
         $university = University::find($idUniversity); // Busca el registro de University con el ID especificado
 
         // Redirigir a la vista del gafete
-        return view('gafete.diseñoG',compact('request','qrUrl','university','eventRole','imagenUrl','folio'));
+        return view('gafete.designG',compact('request','qrUrl','university','eventRole','imagenUrl','folio'));
     }
 
     public function registrarUniversidad(Request $request)
@@ -186,13 +186,39 @@ class RegistroController extends Controller
         return redirect()->route('registroT');
     }
 
-    public function showRegistrationForm()
+    public function showFolioForm()
     {
+        $universidades = University::all();
+        return view('folioValidation',compact('universidades'));
+    }
+    
+
+    public function showRegistrationForm(Request $request)
+    {
+        // Validar el formulario
+        $request->validate([
+            'folio' => 'required|exists:badges,folio', // Asegúrate de tener una columna llamada 'folio' en la tabla 'badges'
+        ]);
+
+        // Obtener el badge correspondiente al folio introducido en el formulario
+        $folio = $request->input('folio');
+        $badge = Badge::where('folio', $folio)->first();
+
+        // Verificar si se encontró un badge con el folio proporcionado
+        if (!$badge) {
+            return redirect()->back()->with('error', 'No se encontró un badge con el folio proporcionado.');
+        }
+
+        // Obtener el usuario asociado al badge
+        $user_id = $badge->user_id;
+        $user = User::find($user_id);
+
         // Obtener la lista de talleres disponibles
         $talleres = Taller::all();
+        $universidades = University::all();
 
         // Retornar la vista con el formulario de registro y la lista de talleres
-        return view('registrar_usuario_taller',compact('talleres'));
+        return view('registrar_usuario_taller', compact('talleres', 'universidades', 'user','badge','folio'));
     }
 
     public function register(Request $request)
@@ -241,6 +267,6 @@ class RegistroController extends Controller
         }
 
         // Redireccionar con un mensaje de éxito
-        return redirect()->route('registro.usuario.evento')->with('success', 'Usuario registrado en los talleres exitosamente.');
+        return redirect()->route('validar.folio')->with('success', 'Usuario registrado en los talleres exitosamente.');
     }
 }

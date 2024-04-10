@@ -83,37 +83,28 @@ body{
                 </div>
             </div>
             <br />
-            <div class="" style="text-align: left">
+            <div class="" style="text-align: center">
                 <h3>
-                    Por favor, complete el siguiente formulario con la informacion
-                    solicitada:
+                    Por favor ingrese su folio
                 </h3>
                 <br />
             </div>
 
             <div class="row">
                 <!-- Formulario -->
+                <div class="col-md-3"></div>
                 <div class="col-md-6">
-                    <form action="{{ route('registrar.usuario.evento') }}" method="post" style="text-align: left">
+                    <form action="{{ route('validar.folio') }}" method="post" style="text-align: center">
                         @csrf
-                        <input type="hidden" name="folio" value="{{ $folio }}">
-                        <!-- Seccion para los talleres -->
-                        <label>Selecciona los talleres:</label><br>
-                        @foreach ($talleres as $taller)
-                            <div class="card">
-                                <input type="checkbox" id="taller_{{ $taller->id }}" name="talleres[]" value="{{ $taller->id }}">
-                                <label for="taller_{{ $taller->id }}">
-                                    <h2>{{ $taller->name }}</h2>
-                                    <p><strong>Descripción:</strong> {{ $taller->description }}</p>
-                                    <p><strong>Espacios Disponibles:</strong> {{ $taller->capacidad }}</p>
-                                    <!--logo del taller-->
-                                    <img src="{{ $taller->img }}" alt="logo" width="100">
-                                </label>
-                            </div>
-                        @endforeach
-                        <button type="submit" class="btn btn-primary">Registrar talleres</button>
+                        <!-- Seccion para el folio -->
+                        <div class="mb-3">
+                            <label for="folio" class="form-label fw-bold">Folio:</label>
+                            <input type="text" class="form-control" id="folio" name="folio" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Continuar</button>
                     </form>
                 </div>
+                <div class="col-md-3"></div>
             </div>
             <br /><br />
         </div>

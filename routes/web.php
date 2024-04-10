@@ -16,9 +16,6 @@ use App\Http\Controllers\DashboardController;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
 
 //Rutas para usuario registrado
 
@@ -67,11 +64,14 @@ Route::group(['middleware' => 'admin'], function () {
 //Rutas publicas
 
 //Registro al evento para la generacion de gafetes y folios
-Route::get('/registroG', [RegistroController::class, 'show'])->name('registroG');
-Route::post('/registroG', [RegistroController::class, 'registrarUsuario'])->name('registro.usuario');
+Route::get('/', [RegistroController::class, 'show'])->name('registroG');
+Route::post('/', [RegistroController::class, 'registrarUsuario'])->name('registro.usuario');
 
-// Ruta para mostrar el formulario de registro de usuario en evento
-Route::get('/registro-usuario-evento', [RegistroController::class, 'showRegistrationForm'])->name('registro.usuario.evento');
+//Ruta para mostrar la vista del formulario dde validacion del folio
+Route::get('/validar-folio', [RegistroController::class, 'showFolioForm'])->name('validar.folio');
+
+//Ruta para validar el folio
+Route::post('/validar-folio', [RegistroController::class, 'showRegistrationForm'])->name('validar.folio');
 
 // Ruta para manejar el envío del formulario de registro de usuario en evento
 Route::post('/registro-usuario-evento', [RegistroController::class, 'register'])->name('registrar.usuario.evento');

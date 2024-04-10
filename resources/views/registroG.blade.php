@@ -9,7 +9,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Foro Internacional del Turismo</title>
+    <title>Foro Internacional de Turismo</title>
     <link rel="stylesheet" type="text/css" href="{{ url('css/stylesForm.css') }}">
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
@@ -21,6 +21,11 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
     />
+    <style>
+      .inside {
+        background-image: url({{ asset('assets/imgForm/FONDO1.png')}})
+      }
+    </style>
   </head>
   <body>
     <div id="navbar">
@@ -42,7 +47,7 @@
         <br />
         <div class="" style="text-align: left">
           <h3>
-            Por favor, complete el siguiente formulario con la informacion
+            Por favor, complete el siguiente formulario con la información
             solicitada:
           </h3>
           <br />
@@ -51,7 +56,7 @@
         <div class="row">
           <!-- Formulario -->
           <div class="col-md-6">
-            <form action="{{ url('/registroG') }}" method="post" enctype="multipart/form-data" style="text-align: left">
+            <form action="{{ url('/') }}" method="post" enctype="multipart/form-data" style="text-align: left">
             @csrf
               <!-- Seccion para el nombre-->
               <div class="mb-3">
@@ -122,6 +127,7 @@
                     name="flexRadioRole"
                     id="{{ $eventRole->name }}"
                     value="{{ $eventRole->id }}"
+                    {{ $eventRole->id == 1 ? 'checked' : '' }}
                     />
                     <label class="form-check-label" for="{{ $eventRole->name }}">
                     {{ $eventRole->name }}
@@ -165,7 +171,7 @@
               <!-- Seccion para la foto del participante -->
               <div class="mb-3">
                 <label for="formFile" class="form-label fw-bold"
-                  >Ingrese su fotografia para su gafete del evento</label
+                  >Ingrese su fotografía para su gafete del evento</label
                 >
                 <input class="form-control-file" type="file" id="formFile" name="foto" />
                 <!-- Button trigger modal -->
@@ -207,7 +213,7 @@
               </div>
               <div>
                 <label for="numero" class="form-label fw-bold"
-                  >Numero-telefonico</label
+                  >Número telefónico</label
                 >
                 <input
                   type="text"
@@ -227,7 +233,7 @@
                 class="btn btn-primary"
                 style="background-color: #a6174b"
               >
-                Enviar
+                Registrarse
               </button>
             </form>
           </div>
@@ -259,7 +265,7 @@
                 style="height: 50px"
               />
               <span style="vertical-align: middle"
-                >983 128 1591 Extension 1009</span
+                >983 128 1591 Extensión 1009</span
               ><br /><br />
               <img
                 src="{{ asset('storage/assets/imgForm/sobre.png') }}"
@@ -392,16 +398,9 @@
       <br />
       <div class="logos">
         <div class="logos-slide">
-          <img src="{{ asset('storage/assets/imgForm/upblogo.jpg') }}" />
-          <img src="{{ asset('storage/assets/imgForm/upblogo.jpg') }}" />
-          <img src="{{ asset('storage/assets/imgForm/upblogo.jpg') }}" />
-          <img src="{{ asset('storage/assets/imgForm/upblogo.jpg') }}" />
-          <img src="{{ asset('storage/assets/imgForm/upblogo.jpg') }}" />
-          <img src="{{ asset('storage/assets/imgForm/upblogo.jpg') }}" />
-          <img src="{{ asset('storage/assets/imgForm/upblogo.jpg') }}" />
-          <img src="{{ asset('storage/assets/imgForm/upblogo.jpg') }}" />
-          <img src="{{ asset('storage/assets/imgForm/upblogo.jpg') }}" />
-          <img src="{{ asset('storage/assets/imgForm/cruz.png') }}" />
+          @foreach ($universidades as $universidad)
+            <img src="{{$universidad->img}}" alt="logo">
+          @endforeach
         </div>
       </div>
 
@@ -410,7 +409,7 @@
       <div class="container">
         <div class="row">
           <div class="container text-center">
-            Derechos &copy; Foro International De Turismo |
+            Derechos  reservados &copy; Foro International De Turismo |
             <span id="fecha"></span>
           </div>
           <!-- JavaScript to display the current year -->
