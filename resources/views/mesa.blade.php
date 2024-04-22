@@ -1,7 +1,7 @@
 @extends('adminlte::page')
 
 @section('content_header')
-    <h1>Universidades registradas</h1>
+    <h1>mesas registradas</h1>
 @stop
 
 @section('content')
@@ -10,24 +10,20 @@
         <thead>
             <tr>
                 <th>Nombre</th>
-                <th>Dominio</th>
-                <th>Logo</th>
                 <th>Acciones</th> 
             </tr>
         </thead>
         <!-- Cuerpo de la tabla -->
         <tbody>
-            <!-- Iteración sobre las universidades -->
-            @foreach($universidades as $universidad)
+            <!-- Iteración sobre las mesas -->
+            @foreach($mesas as $mesa)
             <tr>
-                <td>{{ $universidad->name }}</td>
-                <td>{{ $universidad->domain }}</td>
-                <td><img src="{{ $universidad->img }}" alt="Logo" width="100"></td>
+                <td>{{ $mesa->nombre }}</td>
                 <td>
                     <!-- Botón para editar -->
-                    <a href="{{ route('editar.universidad', $universidad->id) }}" class="btn btn-primary">Editar</a>
+                    <a href="{{ route('editar.mesa', $mesa->id) }}" class="btn btn-primary">Editar</a>
                     <!-- Formulario para borrar -->
-                    <form action="{{ route('borrar.universidad', $universidad->id) }}" method="POST" style="display: inline-block;">
+                    <form action="{{ route('borrar.mesa', $mesa->id) }}" method="POST" style="display: inline-block;">
                         @csrf
                         @method('DELETE')
                         <button type="submit" class="btn btn-danger">Borrar</button>

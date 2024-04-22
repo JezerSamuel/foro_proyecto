@@ -1,149 +1,189 @@
 main {
-    margin-top: -50px;
-    padding-top: 50px;
-    padding-bottom: 50px;
-    background-image: url('{{assets("storage/assets/imgForm/FONDO1.png")}}');
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: cover;
-    height: fit-content;
-    font-family:'Roboto', sans-serif;
-  }
-  
-  .inside {
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: cover;
-    height: auto; /* Adjust height as needed */
-    padding-top: 50px;
-    padding-bottom: 50px;
-  }
-  
-  .banner {
-    background-color: #f0f0f0;
-  }
-  
-  .banner.auto-height {
-    height: auto !important; /* Override height to auto when scroll position is at the top */
-  }
-  
-  .banner.fixed-height {
-    height: 200px; /* Initial height */
-    min-height: 100px; /* Minimum height */
-  }
-  
-  #navbar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    background-color: #a6174b;
-    display: flex; /* Use flexbox */
-    justify-content: center; /* Center horizontally */
-    align-items: center; /* Center vertically */
-    min-height: 80px; /* Set minimum height */
-    max-height: 200px; /* Set maximum height */
-    overflow: hidden; /* Hide overflow content */
-    padding: 0; /* Remove padding */
-    margin: 0; /* Remove margin */
-  }
-  
-  #navbar img {
-    width: auto; /* Take entire width of navbar */
-    height: 100%;
-  }
-  
-  .me-10 {
-    margin-right: 150px;
-  }
-  
-  .boton {
-    background: #c24070ea;
-    width: 100%;
-    cursor: pointer;
-    border: none;
-    border-radius: 50px;
-    color: #ffffff;
-    text-shadow: 1px 1px 2px rgb(0, 0, 0);
-  }
-  
-  .contenido {
-    height: 1000px;
-  }
-  
-  .foto {
-    text-align: center;
-  }
-  
+  margin-top: -50px;
+  padding-top: 50px;
+  padding-bottom: 50px;
+  background-image: url(/storage/assets/imgForm/FONDO1.png);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  height: fit-content;
+  font-family: "Roboto", sans-serif;
+}
+
+/* "storage/assets/imgForm/logooo.png" */
+
+.inside {
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  height: auto; /* Adjust height as needed */
+  padding-top: 50px;
+  padding-bottom: 50px;
+}
+
+.banner {
+  background-color: #f0f0f0;
+}
+
+.banner.auto-height {
+  height: auto !important; /* Override height to auto when scroll position is at the top */
+}
+
+.banner.fixed-height {
+  height: 200px; /* Initial height */
+  min-height: 100px; /* Minimum height */
+}
+
+#navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: #9e2943;
+  display: flex; /* Use flexbox */
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically */
+  min-height: 80px; /* Set minimum height */
+  max-height: 200px; /* Set maximum height */
+  overflow: hidden; /* Hide overflow content */
+  padding: 0; /* Remove padding */
+  margin: 0; /* Remove margin */
+  z-index: 1000; /* Ensure navbar is above other elements */
+}
+
+#navbar img {
+  width: auto; /* Take entire width of navbar */
+  height: 100%;
+}
+
+.me-10 {
+  margin-right: 150px;
+}
+
+.boton {
+  background: #c24070ea;
+  width: 100%;
+  cursor: pointer;
+  border: none;
+  border-radius: 50px;
+  color: #ffffff;
+  text-shadow: 1px 1px 2px rgb(0, 0, 0);
+}
+
+.contenido {
+  height: 1000px;
+}
+
+.foto {
+  text-align: center;
+}
+
+.foto img {
+  max-width: 100%;
+  height: auto;
+}
+@media (max-width: 768px) {
   .foto img {
-    max-width: 100%;
-    height: auto;
-  }
-  @media (max-width: 768px) {
-    .foto img {
       max-width: 90%; /* Adjust the percentage as needed */
-    }
   }
-  
-  @keyframes slide {
-    from {
+}
+
+@keyframes slide {
+  from {
       transform: translateX(100%);
-    }
-    to {
+  }
+  to {
       transform: translateX(-100%);
-    }
   }
-  
-  .logos {
-    overflow: hidden;
-    padding: 20px 0;
-    background: transparent;
-    white-space: nowrap;
-    position: relative;
-  }
-  
-  .logos:before,
-  .logos:after {
-    position: absolute;
-    top: 0;
-    width: 250px;
-    height: 100%;
-    content: "";
-    z-index: 2;
-  }
-  
-  .logos:before {
-    left: 0;
-    background: linear-gradient(to left, rgba(255, 255, 255, 0), #a6174b);
-  }
-  
-  .logos:after {
-    right: 0;
-    background: linear-gradient(to right, rgba(255, 255, 255, 0), #a6174b);
-  }
-  
-  .logos:hover .logos-slide {
-    animation-play-state: paused;
-  }
-  
-  .logos-slide {
-    display: inline-block;
-    animation: slide 30s linear infinite; /* Adjust duration and timing function as needed */
-  }
-  
-  .logos-slide img {
-    height: 100px;
-    margin: 0 40px; /* Adjust margin as needed */
-  }
-  
-  .responsive-iframe {
-    width: 100%;
-    height: 300px; /* Adjust height as needed */
-  }
-  /* 
-    Desarrolladores de Proyecto:
-      Javier Johan Keme Correa 
-      Jezer Samuel Chimal Ruiz
-      Rafael Buitron Hau
-  */
-  
+}
+
+.logos {
+  overflow: hidden;
+  padding: 20px 0;
+  background: transparent;
+  white-space: nowrap;
+  position: relative;
+}
+
+.logos:before,
+.logos:after {
+  position: absolute;
+  top: 0;
+  width: 250px;
+  height: 100%;
+  content: "";
+  z-index: 2;
+}
+
+.logos:before {
+  left: 0;
+  background: linear-gradient(to left, rgba(255, 255, 255, 0), #a6174b);
+}
+
+.logos:after {
+  right: 0;
+  background: linear-gradient(to right, rgba(255, 255, 255, 0), #a6174b);
+}
+
+.logos:hover .logos-slide {
+  animation-play-state: paused;
+}
+
+.logos-slide {
+  display: inline-block;
+  animation: slide 30s linear infinite; /* Adjust duration and timing function as needed */
+}
+
+.logos-slide img {
+  height: 100px;
+  margin: 0 40px; /* Adjust margin as needed */
+}
+
+.responsive-iframe {
+  width: 100%;
+  height: 300px; /* Adjust height as needed */
+}
+
+.icon:hover {
+  filter: brightness(0) invert(1) sepia(100%) saturate(10000%)
+      hue-rotate(0deg);
+}
+
+span:hover {
+  color: #9e2943;
+  font-weight: bold;
+}
+/* 
+  Desarrolladores de Proyecto:
+    Javier Johan Keme Correa 
+    Jezer Samuel Chimal Ruiz
+    Rafael Buitron Hau
+*/
+
+/* Aplica los estilos CSS personalizados aquí */
+.card {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.hover-green:hover {
+  background-color: #078c03 !important;
+}
+
+.iconn {
+  opacity: 0.5;
+}
+.iconn:hover {
+  filter: brightness(200%) invert(0%) sepia(100%) saturate(10000%)
+      hue-rotate(0deg);
+  opacity: 1;
+}
+
+.iconnn {
+  opacity: 0.8;
+}
+.iconnn:hover {
+  opacity: 1;
+}

@@ -25,9 +25,9 @@ window.addEventListener("scroll", function () {
   var newHeight = 200 - scrollPosition * 0.6; // Faster adjustment
 
   if (scrollPosition > 200) {
-    navbar.style.height = newHeight + "px"; // Gradually decrease height
+      navbar.style.height = newHeight + "px"; // Gradually decrease height
   } else {
-    navbar.style.height = 200 - scrollPosition * 0.6 + "px"; // Gradually increase height
+      navbar.style.height = 200 - scrollPosition * 0.6 + "px"; // Gradually increase height
   }
 
   // Adjust image height to cover the navbar
@@ -40,14 +40,13 @@ window.addEventListener("scroll", function () {
 function throttle(func, delay) {
   let lastCalledTime = 0;
   return function () {
-    const now = new Date().getTime();
-    if (now - lastCalledTime >= delay) {
-      func.apply(this, arguments);
-      lastCalledTime = now;
-    }
+      const now = new Date().getTime();
+      if (now - lastCalledTime >= delay) {
+          func.apply(this, arguments);
+          lastCalledTime = now;
+      }
   };
 }
-
 
 document.addEventListener("DOMContentLoaded", function () {
   const ponenteField = document.getElementById("ponenteField");
@@ -57,20 +56,32 @@ document.addEventListener("DOMContentLoaded", function () {
   const expositorRadio = document.getElementById("Expositor");
 
   participanteRadio.addEventListener("change", function () {
-    console.log("Participante selected");
-    ponenteField.style.display = "none";
-    expositorField.style.display = "none";
+      console.log("Participante selected");
+      ponenteField.style.display = "none";
+      expositorField.style.display = "none";
   });
 
   ponenteRadio.addEventListener("change", function () {
-    console.log("Ponente selected");
-    ponenteField.style.display = "block";
-    expositorField.style.display = "none";
+      console.log("Ponente selected");
+      ponenteField.style.display = "block";
+      expositorField.style.display = "none";
   });
 
   expositorRadio.addEventListener("change", function () {
-    console.log("Expositor selected");
-    ponenteField.style.display = "none";
-    expositorField.style.display = "block";
+      console.log("Expositor selected");
+      ponenteField.style.display = "none";
+      expositorField.style.display = "block";
+  });
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+  const buttons = document.querySelectorAll(".sign-up-btn");
+  buttons.forEach((button) => {
+      button.addEventListener("click", function () {
+          const tallerId = this.getAttribute("data-taller-id");
+          // Here you can add the logic to handle signing up for the workshop
+          // You might want to submit the form via JavaScript or perform an AJAX request
+          console.log("Signing up for workshop:", tallerId);
+      });
   });
 });

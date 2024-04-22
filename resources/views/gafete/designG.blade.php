@@ -1,95 +1,153 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gafete</title>
-    <!-- CSS -->
-    <link rel="stylesheet" type="text/css" href="{{ url('css/style.css') }}">
-    <!-- Bootstrap - CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.2/jspdf.min.js"></script>
+  <meta charset="UTF-8">
+  <title>Gafetes</title>
+  <style>
+/* Estilos generales */
+*{
+padding: 0;
+margin: 0;
+font-family: Arial, Helvetica, sans-serif;
+}
 
+
+header {
+    background-image: url(imgGafete/encabezado_img.png);
+    background-size: cover;
+    background-position: center;
+    height: 60px; /* Ajusta la altura según sea necesario */
+}
+
+
+.logo{
+    width: 90%;
+}
+
+.tamañoimg{
+    width: 100px;
+    margin: 0 auto;
+}
+
+hr{
+    color: rgb(89, 2, 18);
+    background-color: rgb(89, 2, 18);
+    height: 2px;
+}
+
+footer {
+    background-image: url(imgGafete/footer_foro.png);
+    color: white; /* Color del texto */
+    background-size: cover;
+    background-position: center;
+    height: 48px; /* Ajusta la altura según sea necesario */
+    text-align: center; /* Centra el texto */
+    line-height: 48px; /* Alinea verticalmente el texto en el centro */
+}
+
+
+.upb{
+    width: 20%;
+}
+
+.gafete{
+    width: 10cm;
+    height: 13.5cm;
+    padding: 10px; /* Agregado para separar el contenido del borde */
+    box-sizing: border-box; /* Incluye padding en el ancho y alto */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.user-info {
+    flex-grow: 1; /* Hace que esta sección ocupe el espacio restante */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    text-align: center; /* Centra el texto */
+}
+
+.user-info h4, .user-info p {
+    margin: 0; /* Elimina el margen de los elementos h4 y p */
+}
+
+.user-info img {
+    max-width: 100%;
+    max-height: 100%;
+    margin: 0 auto; /* Centra la imagen horizontalmente */
+}
+
+.border{
+    border: 1px solid;
+}
+
+.margen{
+    margin-left: 160px;
+}
+  </style>
 </head>
 
 <body>
-    <div  class="mt-4 d-flex justify-content-center" id="content">
-        <div class="border border-black gafete">
-            <header class="py-2">
-                &nbsp;
-            </header>
-
-            <div class="justify-content-center">
-                <div style="width: 9cm; margin-left: 18px;">
-                    <img src="{{ asset('storage/assets/imgGafete/logo_foro.png') }}" alt="" class="mt-3" style="width: 100%;">
-                    <hr>
-                </div>
+    <div class="margen mt-4 d-flex justify-content-center">
+ 
+     <div class="border border-black gafete">
+         <header class="py-2">
+             &nbsp;
+         </header>
+ 
+         <div class="justify-content-center">
+             <div style="width: 9cm; margin-left: 18px;"><br>
+                 <img src="imgGafete/logo_foro.png" alt="" class="mt-3" style="width: 100%;">
+                 <hr>
+             </div>
+         </div>
+ 
+         <div class="text-center">
+             <h3 style="font-size: 25px; position: relative;"> <center>{{ $dato->university }}</center></h3> <!-- En esta seccion va la universidad-->
+             <div style="width: 5cm; margin: 0 auto;" class="mx-auto d-block my-3 text-center">
+                 <center><img src="storage/img/{{ $dato->imagen }}" alt="" style="margin: 0 auto;" height="160"> </center> <!-- En esta seccion va la imagen del usuario-->
+             </div>
+             <h4 class="fw-bold" style="font-size: 20px;"> <center>{{ $dato->name}}</center></h4> <!-- En esta seccion va el nombre del usuario-->
+             <p style="margin-bottom: 18px;"><center>{{ $dato->role}}</center></p> <!-- En esta seccion va el rol del usuario-->
+         </div>
+ 
+         
+         <footer class="encabezado_img.png  d-flex align-items-center justify-content-center">
+             <h5 class="">Bacalar, Q. Roo</h5> <!-- En esta seccion va el estado y la ciudad del usuario que se toma en base a la direccion de la universidad-->
+         </footer>
+     </div>
+     
+     <div>
+        &nbsp;
+     </div>
+ 
+     <div class="border border-black m-0 p-0 ms-2 gafete">
+         <header class="py-2">
+             &nbsp;
+         </header>
+ 
+         <div class="justify-content-center">
+             <div style="width: 9cm; margin-left: 18px;"><br>
+                 <img src="imgGafete/logo_foro.png" alt="" class="mt-3" style="width: 100%;">
+                 <hr>
+             </div>
+         </div>
+ 
+         <div class="text-center" style="margin-bottom: 40px;">
+            <div style="width: 200px; margin: 0 auto" class="mx-auto d-block mt-3 mb-2"><br>
+                <img src="storage/qr-codes/{{ $dato->qr }}" alt="" class="tamañoimg" height="200"> <!-- En esta seccion va el qr del usuario-->
             </div>
-
-            <div class="text-center">
-                <h4 style="font-size: 25px; position: relative;">{{ $university->name }}</h4>
-                <!-- En esta seccion va la universidad-->
-                <div style="width: 5cm;" class="mx-auto d-block my-3">
-                    <img src="{{ asset($imagenUrl) }}" alt="" class="w-100">
-                    <!-- En esta seccion va la imagen del usuario-->
-                </div>
-                <h4 class="fw-bold" style="font-size: 20px;">{{ $request->nombre}}</h4>
-                <!-- En esta seccion va el nombre del usuario-->
-                <p style="margin-bottom: 18px;">{{ $eventRole->name}}</p>
-                <!-- En esta seccion va el rol del usuario-->
-            </div>
-
-            <footer class="text-center text-white py-2">
-                <h5>Bacalar, Q. Roo</h5>
-                <!-- En esta seccion va el estado y la ciudad del usuario que se toma en base a la direccion de la universidad-->
-            </footer>
+            <p><center>{{ $dato->folio }}</p>
         </div>
-
-        <div class="border border-black m-0 p-0 ms-2 gafete">
-            <header class="py-2">
-                &nbsp;
-            </header>
-
-            <div class="justify-content-center">
-                <div style="width: 9cm; margin-left: 18px;">
-                    <img src="{{ asset('storage/assets/imgGafete/logo_foro.png') }}" alt="" class="mt-3" style="width: 100%;">
-                    <hr>
-                </div>
+         
+        <footer class="text-center text-white py-2 d-flex align-items-center">
+            <div style="width: 5cm; margin: 0 auto;" class="mx-auto d-block logo-upb">
+                <img src="imgGafete/logo_upb.png" alt="" class="upb">
             </div>
-
-            <div class="text-center" style="margin-bottom: 46px;">
-            <div style="width: 200px;" class="mx-auto d-block mt-3 mb-2">
-                <img src="{{ asset('storage/qr-codes/'.$qrUrl) }}" alt="Código QR" id="qr-code" style="height:195px;">
-            </div>
-                <p>{{ $folio }}</p>
-            </div>
-            <footer class="text-center text-white py-2">
-                <div style="width: 5cm;" class="mx-auto d-block">
-                    <img src="{{ asset('storage/assets/imgGafete/logo_upb.png') }}" alt="" class="upb">
-                </div>
-            </footer>
-        </div>
-    </div>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-
-            // Esperar un breve período de tiempo antes de generar el PDF
-            setTimeout(function() {
-                downloadPDF();
-            }, 2000); // Esperar 1 segundo (1000 milisegundos)
-
-            // Función para descargar automáticamente el contenido en formato PDF
-            const downloadPDF = () => {
-                const element = document.getElementById('content');
-                html2pdf()
-                    .from(element)
-                    .save();
-            };
-        });
-    </script>
-
-</body>
+        </footer>
+     </div>
+ </div>
+ 
+ </body>
 </html>

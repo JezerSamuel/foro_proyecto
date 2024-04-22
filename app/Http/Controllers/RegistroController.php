@@ -9,12 +9,15 @@ use App\Models\Badge;
 use App\Models\University;
 use App\Models\EventRole;
 use App\Models\Taller;
+use App\Models\Dato;
 use App\Models\Mesa;
 use Illuminate\Support\Facades\Storage;
 use Endroid\QrCode\QrCode;
 use Endroid\QrCode\Writer\PngWriter;
 use Endroid\QrCode\ErrorCorrectionLevel;
 use Endroid\QrCode\Writer\Result\ResultInterface;
+use Dompdf\Dompdf;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class RegistroController extends Controller
 {
@@ -28,6 +31,13 @@ class RegistroController extends Controller
 
     public function registrarUsuario(Request $request)
     {
+        // Verificar si el correo electrónico ya está registrado
+        $existingUser = User::where('email', $request->correo)->first();
+
+        if ($existingUser) {
+            // Si el correo electrónico ya está registrado, redirigir con un mensaje de error
+            return redirect()->back()->with('error', 'El correo electronico que ingreso ya ha sido registrado, intente con uno diferente.');
+        }
         
         // Crear usuario
         $usuario = User::create([
@@ -47,6 +57,7 @@ class RegistroController extends Controller
         if ($request->hasFile('foto')) {
             $imagenPath = $request->file('foto')->store('public/img');
             $imagenUrl = Storage::url($imagenPath);
+            $nombreImagenEncriptado = basename($imagenPath);
         }
 
         // Crear folio
@@ -115,9 +126,26 @@ class RegistroController extends Controller
 
         $idUniversity = $request->universidad; // Obtener el ID de la universidaad
         $university = University::find($idUniversity); // Busca el registro de University con el ID especificado
+        
+        $dato = Dato::create([
+            'user_id' => $usuario->id,
+            'imagen' => $nombreImagenEncriptado,
+            'university' => $university->name,
+            'name' => $usuario->name,
+            'apellidoPaterno' => $request->apellido_p,
+            'apellidoMaterno' => $request->apellido_m,
+            'role' => $eventRole->name,
+            'qr' => $qrUrl,
+            'folio' => $folio,
+        ]);
+        $dato->save();
+
+        $pdf = Pdf::loadView('gafete.designG', compact('dato'))->save(public_path('storage/pdfs/'.$usuario->id.'.pdf'));
+        return $pdf->download('Gafete.pdf');
+        
 
         // Redirigir a la vista del gafete
-        return view('gafete.designG',compact('request','qrUrl','university','eventRole','imagenUrl','folio'));
+        //return view('gafete.designG',compact('request','qrUrl','university','eventRole','imagenUrl','folio'));
     }
 
     public function registrarUniversidad(Request $request)
@@ -195,10 +223,6 @@ class RegistroController extends Controller
 
     public function showRegistrationForm(Request $request)
     {
-        // Validar el formulario
-        $request->validate([
-            'folio' => 'required|exists:badges,folio', // Asegúrate de tener una columna llamada 'folio' en la tabla 'badges'
-        ]);
 
         // Obtener el badge correspondiente al folio introducido en el formulario
         $folio = $request->input('folio');
@@ -206,7 +230,7 @@ class RegistroController extends Controller
 
         // Verificar si se encontró un badge con el folio proporcionado
         if (!$badge) {
-            return redirect()->back()->with('error', 'No se encontró un badge con el folio proporcionado.');
+            return redirect()->back()->with('error', 'No se encontró un usuario con el folio proporcionado.');
         }
 
         // Obtener el usuario asociado al badge
@@ -215,10 +239,14 @@ class RegistroController extends Controller
 
         // Obtener la lista de talleres disponibles
         $talleres = Taller::all();
+
+        //obtener la universidad a la que pertenece
+        $universidadU = University::find($user->university_id);
         $universidades = University::all();
 
         // Retornar la vista con el formulario de registro y la lista de talleres
-        return view('registrar_usuario_taller', compact('talleres', 'universidades', 'user','badge','folio'));
+        return view('registrar_usuario_taller', compact('talleres', 'universidades','universidadU', 'user', 'badge', 'folio'));
+        //return redirect('/registro-usuario-evento')->with(compact('talleres', 'universidades','universidadU', 'user', 'badge', 'folio'));
     }
 
     public function register(Request $request)
@@ -226,8 +254,7 @@ class RegistroController extends Controller
         // Validar los datos del formulario
         $request->validate([
             'folio' => 'required|string|max:255',
-            'talleres' => 'required|array',
-            'talleres.*' => 'exists:tallers,id',
+            'taller_id' => 'required|exists:tallers,id',
         ]);
 
         // Buscar el badge asociado al folio ingresado
@@ -242,31 +269,49 @@ class RegistroController extends Controller
         $user_id = $badge->user_id;
         $user = User::find($user_id);
 
-        // Obtener los talleres seleccionados por el usuario
-        $talleresIds = $request->input('talleres');
+        // Obtener el taller seleccionado por el usuario
+        $tallerId = $request->input('taller_id');
+        $taller = Taller::find($tallerId);
 
-        // Registrar al usuario en los talleres seleccionados y actualizar los espacios disponibles
-        foreach ($talleresIds as $tallerId) {
-            $taller = Taller::find($tallerId);
-
-            // Verificar si el usuario ya está registrado en el taller
-            if ($user->talleres()->where('taller_id', $taller->id)->exists()) {
-                continue; // Saltar el registro si el usuario ya está registrado en el taller
-            }
-
-            // Verificar si hay suficientes espacios disponibles en el taller
-            if ($taller->capacidad <= 0) {
-                return back()->with('error', 'No hay espacios disponibles en el taller ' . $taller->nombre);
-            }
-
-            // Registrar al usuario en el taller
-            $user->talleres()->attach($taller);
-
-            // Actualizar los espacios disponibles
-            $taller->decrement('capacidad');
+        // Verificar si el usuario ya está registrado en el taller
+        if ($user->talleres()->where('taller_id', $taller->id)->exists()) {
+            return back()->with('error', 'El usuario ya está registrado en este taller.');
         }
 
+        // Verificar si hay suficientes espacios disponibles en el taller
+        if ($taller->capacidad <= 0) {
+            return back()->with('error', 'No hay espacios disponibles en el taller ' . $taller->nombre);
+        }
+
+        // Registrar al usuario en el taller
+        $user->talleres()->attach($taller);
+
+        // Actualizar los espacios disponibles
+        $taller->decrement('capacidad');
+
         // Redireccionar con un mensaje de éxito
-        return redirect()->route('validar.folio')->with('success', 'Usuario registrado en los talleres exitosamente.');
+        return redirect()->back()->with('success', 'Usuario registrado en el taller exitosamente.');
     }
+
+    public function testView()
+    {
+        // Crear usuario
+        $dato = Dato::create([
+            'user_id' => '2',
+            'imagen' => 'equisde',
+            'university' => 'Universidad Polictecnica de Bacalar',
+            'name' => 'Jezer',
+            'apellidoPaterno' => 'Chimal',
+            'apellidoMaterno' => 'Ruiz',
+            'role' => 'Participante',
+            'qr' => 'equisde',
+            'folio' => '24-001-002'
+        ]);
+        $dato->save();
+
+        $pdf = Pdf::loadView('gafete.designG', compact('dato'));
+        return $pdf->stream();
+        //return view('gafete.designG', compact('dato'));
+    }
+
 }

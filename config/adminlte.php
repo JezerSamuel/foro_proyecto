@@ -315,13 +315,6 @@ return [
             'url' => 'admin/blog',
             'can' => 'manage-blog',
         ],
-        [
-            'text' => 'pages',
-            'url' => 'admin/pages',
-            'icon' => 'far fa-fw fa-file',
-            'label' => 4,
-            'label_color' => 'success',
-        ],
         ['header' => 'Elementos de la Página'],
         [
             'text' => 'Mesas',
@@ -329,11 +322,11 @@ return [
             'submenu' => [
                 [
                     'text' => 'Administrar',
-                    'url' => '/rol',
+                    'url' => '/mesa',
                 ],
                 [
                     'text' => 'Añadir',
-                    'url' => '/registroR',
+                    'url' => '/registroM',
                 ],
             ],
         ],
@@ -362,6 +355,20 @@ return [
                 [
                     'text' => 'Añadir',
                     'url' => '/registroT',
+                ],
+            ],
+        ],
+        [
+            'text' => 'Administrar',
+            'icon' => 'fas fa-fw fa-th-list',
+            'submenu' => [
+                [
+                    'text' => 'Usuarios',
+                    'url' => '/usuarios',
+                ],
+                [
+                    'text' => 'Asistencias',
+                    'url' => '/asistencias',
                 ],
             ],
         ],
